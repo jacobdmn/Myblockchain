@@ -2,12 +2,14 @@ import Block from "./block";
 
 export default class Blockchain {
   chain: Block[];
+  difficulty: number;
   constructor() {
-    this.chain = [this.createGenesisBlock()];
+    this.difficulty = 1;
+    this.chain = [this.createGenesisBlock(this.difficulty)];
   }
 
-  createGenesisBlock() {
-    return new Block(0, "10/04/1998", "Genesis Block WOW!", "0");
+  createGenesisBlock(difficulty: number) {
+    return new Block(0, "10/04/1998", "Genesis Block WOW!", "0", difficulty);
   }
 
   getLatestBlock() {
@@ -21,7 +23,13 @@ export default class Blockchain {
     let previousHash = this.getLatestBlock().hash;
 
     /// create it
-    let newBlock = new Block(index, timestamp, data, previousHash);
+    let newBlock = new Block(
+      index,
+      timestamp,
+      data,
+      previousHash,
+      this.difficulty
+    );
 
     // append to chain
     this.chain.push(newBlock);
@@ -32,8 +40,12 @@ export default class Blockchain {
 
   isChainValid() {
     for (let i = 1; i < this.chain.length; i++) {
-      if (this.chain[i - 1].hash !== this.chain[i].previousHash) return false;
-      if (this.chain[i].hash !== this.chain[i].generateHash()) return false;
+      const previousBlock = this.chain[i - 1];
+      const currentBlock = this.chain[i];
+
+      if (currentBlock.hash !== currentBlock.calculateHash()) return false;
+
+      if (currentBlock.previousHash !== previousBlock.hash) return false;
     }
     return true;
   }
