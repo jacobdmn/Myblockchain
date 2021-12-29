@@ -1,1 +1,1 @@
-# Blockchain frontend on React
+# Blockchain backend on React
