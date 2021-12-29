@@ -1,17 +1,16 @@
-import { urlToHttpOptions } from "url";
-
-export class Block {
-  index: string;
+import SHA256 from "crypto-js/sha256";
+export default class Block {
+  index: number;
   timestamp: string;
   data: any;
   previousHash: string;
   hash: string;
 
   constructor(
-    index: string,
+    index: number,
     timestamp: string,
     data: any,
-    previousHash: string
+    previousHash: string = ""
   ) {
     this.index = index;
     this.timestamp = timestamp;
@@ -22,6 +21,11 @@ export class Block {
   }
 
   generateHash() {
-    return "2";
+    return SHA256(
+      this.index +
+        this.timestamp +
+        JSON.stringify(this.data) +
+        this.previousHash
+    ).toString();
   }
 }
