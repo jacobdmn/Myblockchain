@@ -9,7 +9,7 @@ export default class Blockchain {
   }
 
   createGenesisBlock(difficulty: number) {
-    return new Block(0, "10/04/1998", "Genesis Block WOW!", "0", difficulty);
+    return new Block(0, "10/04/1998", "Genesis Block", "0", difficulty);
   }
 
   getLatestBlock() {
